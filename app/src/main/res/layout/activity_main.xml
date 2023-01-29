@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:scrollbarThumbVertical="?attr/greenAccordingBg"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+
+            <TextView
+                android:id="@+id/wallpaperTitle"
+                style="@style/SemiboldHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/wallpapers"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="@dimen/dimen_16dp"
+                />
+
+            <LinearLayout
+                android:id="@+id/actionsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_margin="@dimen/dimen_16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/wallpaperTitle">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCategory"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dimen_56dp"
+                    android:layout_marginHorizontal="@dimen/dimen_4dp"
+                    android:layout_weight="1"
+
+                    android:backgroundTint="?attr/greenAccordingBg"
+                    android:fontFamily="@font/lexend_light"
+                    android:text="@string/category"
+                    android:textAllCaps="false"
+                    android:textColor="?attr/colorBackground"
+                    app:cornerRadius="@dimen/dimen_8dp"
+                    app:elevation="@dimen/dimen_0dp"
+
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dimen_56dp"
+                    android:layout_marginHorizontal="@dimen/dimen_4dp"
+                    android:layout_weight="1"
+
+                    android:backgroundTint="?attr/greenAccordingBg"
+                    android:fontFamily="@font/lexend_light"
+                    android:text="@string/search"
+                    android:textAllCaps="false"
+                    android:textColor="?attr/colorBackground"
+                    app:cornerRadius="@dimen/dimen_8dp"
+                    app:elevation="@dimen/dimen_0dp"
+
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCollection"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dimen_56dp"
+                    android:layout_marginHorizontal="@dimen/dimen_4dp"
+                    android:layout_weight="1"
+
+                    android:backgroundTint="?attr/greenAccordingBg"
+                    android:fontFamily="@font/lexend_light"
+                    android:text="@string/favorites"
+                    android:textAllCaps="false"
+                    android:textColor="?attr/colorBackground"
+                    app:cornerRadius="@dimen/dimen_8dp"
+                    app:elevation="@dimen/dimen_0dp"
+
+                    />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/wallpaperRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/dimen_16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/actionsContainer"
+                android:overScrollMode="never"
+                android:layout_margin="@dimen/dimen_16dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Wallpaper" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorBackground">@color/black_variant</item>
+        <item name="colorBackgroundInvert">@color/white_variant</item>
+        <item name="colorPrimary">@color/dark_green</item>
+        <item name="colorPrimaryVariant">@color/light_green</item>
+        <item name="android:statusBarColor">@color/dark_green</item>
+
+        <!--        Other attributes mapping-->
+        <item name="fontExtraLight">@font/lexend_extralight</item>
+        <item name="fontLight">@font/lexend_light</item>
+        <item name="fontRegular">@font/lexend_regular</item>
+        <item name="fontSemiBold">@font/lexend_semibold</item>
+        <item name="semiboldHeader">@style/SemiboldHeader</item>
+        <item name="greenAccordingBg">@color/light_green</item>
+    </style>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorBackground" format="reference"/>
+    <attr name="colorBackgroundInvert" format="reference"/>
+    <attr name="greenAccordingBg" format="reference"/>
+
+    <attr name="fontExtraLight" format="reference"/>
+    <attr name="fontLight" format="reference"/>
+    <attr name="fontRegular" format="reference"/>
+    <attr name="fontSemiBold" format="reference"/>
+    <attr name="semiboldHeader" format="reference"/>
+
+</resources>

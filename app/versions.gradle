@@ -1,0 +1,36 @@
+ext.deps = [:]
+
+def versions = [:]
+versions.glide = "4.14.2"
+versions.retrofit = "2.9.0"
+versions.viewmodel_ktx = "2.5.1"
+versions.coroutines = "1.6.1"
+versions.koin = "3.2.0"
+
+def deps = [:]
+deps.versions = versions
+
+def glide = [:]
+glide.bumptech_glide = "com.github.bumptech.glide:glide:$versions.glide"
+glide.glide_compiler = "com.github.bumptech.glide:compiler:$versions.glide"
+deps.glide = glide
+
+def retrofit = [:]
+retrofit.squareup_retrofit = "com.squareup.retrofit2:retrofit:$versions.retrofit"
+retrofit.retrofit_convertor = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+deps.retrofit = retrofit
+
+def coroutines = [:]
+coroutines.core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
+coroutines.android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
+deps.coroutines = coroutines
+
+def koin = [:]
+koin.android = "io.insert-koin:koin-android:$versions.koin"
+koin.android_compat = "io.insert-koin:koin-android-compat:$versions.koin"
+koin.navigation = "io.insert-koin:koin-android-compat:$versions.koin"
+deps.koin = koin
+
+ext.deps = deps
+
+

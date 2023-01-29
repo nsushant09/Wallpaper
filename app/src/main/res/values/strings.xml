@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Wallpaper</string>
+    <string name="wallpapers">Wallpapers</string>
+    <string name="category">Category</string>
+    <string name="search">Search</string>
+    <string name="favorites">Favorites</string>
+    <string name="image">Image</string>
+</resources>
