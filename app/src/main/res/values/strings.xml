@@ -5,4 +5,9 @@
     <string name="search">Search</string>
     <string name="favorites">Favorites</string>
     <string name="image">Image</string>
+    <string name="action_back">Action Back</string>
+    <string name="no_results_found">No results found</string>
+    <string name="save">Save</string>
+    <string name="apply">Apply</string>
+    <string name="download">Download</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.neupanesushant.wallpaper
 
-import com.neupanesushant.wallpaper.components.MainViewModel
+import com.neupanesushant.wallpaper.components.viewmodels.MainViewModel
+import com.neupanesushant.wallpaper.components.viewmodels.SearchedImageViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -22,6 +23,10 @@ fun appModules() = module{
 
     viewModel {
         MainViewModel(androidApplication(), get())
+    }
+
+    viewModel{
+        SearchedImageViewModel(androidApplication(), get())
     }
 
 }

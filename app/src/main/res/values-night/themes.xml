@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/dark_green</item>
         <item name="colorPrimaryVariant">@color/light_green</item>
         <item name="android:statusBarColor">@color/dark_green</item>
+        <item name="colorBWAccordingBg">@color/black</item>
+        <item name="colorBWAccordingBgInvert">@color/white</item>
 
         <!--        Other attributes mapping-->
         <item name="fontExtraLight">@font/lexend_extralight</item>
@@ -14,5 +16,7 @@
         <item name="fontSemiBold">@font/lexend_semibold</item>
         <item name="semiboldHeader">@style/SemiboldHeader</item>
         <item name="greenAccordingBg">@color/light_green</item>
+        <item name="greenAccordingBgInvert">@color/dark_green</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
     </style>
 </resources>

@@ -16,9 +16,20 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="@dimen/dimen_32dp"
             >
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/searchEt"
+                android:layout_marginTop="@dimen/dimen_64dp"
+                android:indeterminateDrawable="@drawable/style_progressbar"
+                />
             <TextView
                 android:id="@+id/wallpaperTitle"
                 style="@style/SemiboldHeader"
@@ -55,8 +66,6 @@
                     android:textAllCaps="false"
                     android:textColor="?attr/colorBackground"
                     app:cornerRadius="@dimen/dimen_8dp"
-                    app:elevation="@dimen/dimen_0dp"
-
                     />
 
                 <com.google.android.material.button.MaterialButton
@@ -95,15 +104,35 @@
 
             </LinearLayout>
 
+            <EditText
+                android:id="@+id/searchEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/actionsContainer"
+                android:background="@drawable/bg_search"
+                android:layout_marginHorizontal="@dimen/dimen_16dp"
+                android:layout_marginVertical="@dimen/dimen_8dp"
+
+                android:hint="@string/search"
+                android:fontFamily="?attr/fontLight"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:fitsSystemWindows="true"
+                />
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/wallpaperRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:layout_marginTop="@dimen/dimen_16dp"
+                android:layout_marginTop="@dimen/dimen_8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/actionsContainer"
+                app:layout_constraintTop_toBottomOf="@id/searchEt"
                 android:overScrollMode="never"
                 android:layout_margin="@dimen/dimen_16dp"
                 />

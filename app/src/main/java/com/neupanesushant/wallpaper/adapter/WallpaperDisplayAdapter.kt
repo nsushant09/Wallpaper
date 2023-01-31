@@ -34,12 +34,12 @@ class WallpaperDisplayAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-
         val animation = AnimationUtils.loadAnimation(
             context,
-            org.koin.android.R.anim.abc_grow_fade_in_from_bottom)
-
-        holder.root.startAnimation(animation)
+            org.koin.android.R.anim.abc_grow_fade_in_from_bottom
+        )
+        animation.duration = 100
+        holder.itemView.animation = animation
         loadImage(holder.image, 450, 480, position)
 
         holder.image.setOnClickListener {
@@ -47,7 +47,7 @@ class WallpaperDisplayAdapter(
         }
     }
 
-    private fun loadImage(view : ImageView, width : Int, height : Int, position : Int){
+    private fun loadImage(view: ImageView, width: Int, height: Int, position: Int) {
         Glide.with(context)
             .asBitmap()
             .load(imageList[position].src.portrait)

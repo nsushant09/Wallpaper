@@ -3,6 +3,9 @@
     <attr name="colorBackground" format="reference"/>
     <attr name="colorBackgroundInvert" format="reference"/>
     <attr name="greenAccordingBg" format="reference"/>
+    <attr name="greenAccordingBgInvert" format="reference"/>
+    <attr name="colorBWAccordingBg" format="reference"/>
+    <attr name="colorBWAccordingBgInvert" format="reference"/>
 
     <attr name="fontExtraLight" format="reference"/>
     <attr name="fontLight" format="reference"/>

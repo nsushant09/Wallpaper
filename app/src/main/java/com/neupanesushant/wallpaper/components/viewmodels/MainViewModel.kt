@@ -1,4 +1,4 @@
-package com.neupanesushant.wallpaper.components
+package com.neupanesushant.wallpaper.components.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -13,13 +13,18 @@ import kotlinx.coroutines.launch
 class MainViewModel(private val application: Application, private val endpoints: Endpoints) :
     ViewModel() {
 
-    private val job = Job()
+    private val _isLoading : MutableLiveData<Boolean> = MutableLiveData()
+    val isLoading : LiveData<Boolean> get() = _isLoading
+
     private val _imageResponse = MutableLiveData<SearchResponse>()
     val imageResponse get() : LiveData<SearchResponse> = _imageResponse
 
     fun getRandomImages() {
+        _isLoading.value = true
         viewModelScope.launch {
             _imageResponse.value = endpoints.getSearchedPhotoWithPerPage(searchLabel = "Random", per_page = 100)
+        }.invokeOnCompletion {
+            _isLoading.value = false
         }
     }
 

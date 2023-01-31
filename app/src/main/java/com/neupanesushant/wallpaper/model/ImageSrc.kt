@@ -1,5 +1,9 @@
 package com.neupanesushant.wallpaper.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class ImageSrc(
     val landscape: String,
     val large: String,
@@ -9,4 +13,4 @@ data class ImageSrc(
     val portrait: String,
     val small: String,
     val tiny: String
-)
+) : Parcelable

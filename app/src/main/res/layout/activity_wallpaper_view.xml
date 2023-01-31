@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.jsibbold.zoomage.ZoomageView
+        android:id="@+id/wallpaperImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:zoomage_restrictBounds="false"
+        app:zoomage_animateOnReset="true"
+        app:zoomage_autoResetMode="UNDER"
+        app:zoomage_autoCenter="true"
+        app:zoomage_zoomable="true"
+        app:zoomage_translatable="true"
+        app:zoomage_minScale="0.6"
+        app:zoomage_maxScale="8"
+        />
+
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="@dimen/dimen_32dp"
+        android:layout_height="@dimen/dimen_32dp"
+
+        android:src="@drawable/ic_back"
+        android:layout_margin="@dimen/dimen_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:contentDescription="@string/action_back"
+        app:tint="?attr/greenAccordingBg"
+        />
+
+    <ImageView
+        android:id="@+id/btnInfo"
+        android:layout_width="@dimen/dimen_32dp"
+        android:layout_height="@dimen/dimen_32dp"
+
+        android:src="@drawable/ic_info"
+        android:layout_margin="@dimen/dimen_16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:contentDescription="@string/image"
+        app:tint="?attr/greenAccordingBg" />
+
+    <LinearLayout
+        android:id="@+id/actionsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="@dimen/dimen_16dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+        <LinearLayout
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_96dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/dimen_8dp"
+            android:background="@drawable/bg_custom_btn_large"
+            >
+            <ImageView
+                android:layout_width="@dimen/dimen_24dp"
+                android:layout_height="@dimen/dimen_24dp"
+                android:contentDescription="@string/image"
+                android:layout_marginBottom="@dimen/dimen_4dp"
+                android:src="@drawable/ic_save"
+                app:tint="?attr/colorBWAccordingBg"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/save"
+
+                android:textSize="14sp"
+                android:fontFamily="?attr/fontRegular"
+                android:textColor="?attr/colorBWAccordingBg"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnApply"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_96dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/dimen_8dp"
+            android:background="@drawable/bg_custom_btn_large"
+            >
+            <ImageView
+                android:layout_width="@dimen/dimen_24dp"
+                android:layout_height="@dimen/dimen_24dp"
+                android:contentDescription="@string/image"
+                android:layout_marginBottom="@dimen/dimen_4dp"
+                android:src="@drawable/ic_apply"
+                app:tint="?attr/colorBWAccordingBg"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/apply"
+
+                android:textSize="14sp"
+                android:fontFamily="?attr/fontRegular"
+                android:textColor="?attr/colorBWAccordingBg"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnDownload"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_96dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/dimen_8dp"
+            android:background="@drawable/bg_custom_btn_large"
+            >
+            <ImageView
+                android:layout_width="@dimen/dimen_24dp"
+                android:layout_height="@dimen/dimen_24dp"
+                android:contentDescription="@string/image"
+                android:layout_marginBottom="@dimen/dimen_4dp"
+                android:src="@drawable/ic_download"
+                app:tint="?attr/colorBWAccordingBg"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/download"
+
+                android:textSize="14sp"
+                android:fontFamily="?attr/fontRegular"
+                android:textColor="?attr/colorBWAccordingBg"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
