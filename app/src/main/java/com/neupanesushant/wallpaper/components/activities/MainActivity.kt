@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnCollection.setOnClickListener {
-
+            this.showText("This feature will be added soon!!!")
         }
 
         binding.btnSearch.setOnClickListener {
