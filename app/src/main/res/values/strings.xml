@@ -10,4 +10,6 @@
     <string name="save">Save</string>
     <string name="apply">Apply</string>
     <string name="download">Download</string>
+    <string name="favorite">Favorite</string>
+    <string name="there_are_no_any_favorite_contents">There are no any favorite contents</string>
 </resources>

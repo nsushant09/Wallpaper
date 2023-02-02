@@ -1,8 +1,8 @@
 package com.neupanesushant.wallpaper.model
 
 class Constants {
-    companion object{
-       val categoryList = listOf<String>(
+    companion object {
+        val categoryList = listOf<String>(
             "Fashion",
             "Lifestyle",
             "Art",
@@ -28,7 +28,12 @@ class Constants {
             "Foggy Forests",
         )
 
-         const val SEARCH_QUERY = "SEARCH_QUERY"
-         const val WALLPAPER_PHOTO = "WALLPAPER_PHOTO"
+        const val SEARCH_QUERY = "SEARCH_QUERY"
+        const val WALLPAPER_PHOTO = "WALLPAPER_PHOTO"
+        const val SHARED_PREFERENCE = "WALLPAPER_SHARED_PREF"
+        const val ROOM_DATABASE_NAME = "WALLPAPER_DATABASE"
+        const val ROOM_FAVORITES_TABLE = "FAVORITES_TABLE"
+        const val ROOM_SEARCHRESPONSE_TABLE = "SEARCHRESPONSE_TABLE"
+
     }
 }

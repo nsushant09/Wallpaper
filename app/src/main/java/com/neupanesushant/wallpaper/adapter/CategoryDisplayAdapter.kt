@@ -3,17 +3,8 @@ package com.neupanesushant.wallpaper.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
-import com.neupanesushant.wallpaper.components.BottomSheetCallback
-import com.neupanesushant.wallpaper.components.CategoryBottomSheet
 import com.neupanesushant.wallpaper.databinding.ItemCategoryBinding
-import com.neupanesushant.wallpaper.databinding.ItemImageBinding
-import com.neupanesushant.wallpaper.model.Photo
 
 class CategoryDisplayAdapter(
     private val context: Context,

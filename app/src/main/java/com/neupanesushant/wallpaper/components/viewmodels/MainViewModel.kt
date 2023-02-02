@@ -6,25 +6,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neupanesushant.wallpaper.Endpoints
+import com.neupanesushant.wallpaper.components.data.NetworkRepository
 import com.neupanesushant.wallpaper.model.SearchResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val application: Application, private val endpoints: Endpoints) :
+class MainViewModel(private val application: Application, private val network : NetworkRepository) :
     ViewModel() {
 
-    private val _isLoading : MutableLiveData<Boolean> = MutableLiveData()
-    val isLoading : LiveData<Boolean> get() = _isLoading
+   val isLoading : MutableLiveData<Boolean> = MutableLiveData()
 
     private val _imageResponse = MutableLiveData<SearchResponse>()
     val imageResponse get() : LiveData<SearchResponse> = _imageResponse
 
     fun getRandomImages() {
-        _isLoading.value = true
-        viewModelScope.launch {
-            _imageResponse.value = endpoints.getSearchedPhotoWithPerPage(searchLabel = "Random", per_page = 100)
+        isLoading.value = true
+        viewModelScope.launch{
+            _imageResponse.value = network.getSearchedPhotoPerPage(searchLabel = "Random", perPage = 100)
         }.invokeOnCompletion {
-            _isLoading.value = false
+            isLoading.value = false
         }
     }
 

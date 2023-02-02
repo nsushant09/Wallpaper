@@ -86,7 +86,7 @@
                     />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCollection"
+                    android:id="@+id/btnFavorites"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dimen_56dp"
                     android:layout_marginHorizontal="@dimen/dimen_4dp"

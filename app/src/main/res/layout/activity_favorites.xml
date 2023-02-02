@@ -29,7 +29,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginTop="@dimen/dimen_16dp"
                 android:layout_marginEnd="@dimen/dimen_16dp"
-                >
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/btnBack"
@@ -41,12 +41,13 @@
                     app:tint="?attr/colorBackgroundInvert" />
 
                 <TextView
-                    android:id="@+id/searchTitle"
+                    android:id="@+id/favoritesTitle"
                     style="@style/SemiboldHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_8dp"
                     android:maxLines="1"
+                    android:text="@string/favorites"
                     android:ellipsize="end"
                     />
 
@@ -72,14 +73,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbarContainer"
-                android:layout_marginTop="@dimen/dimen_64dp"
-                android:layout_marginHorizontal="@dimen/dimen_16dp"
-                android:text="@string/no_results_found"
+                android:layout_margin="@dimen/dimen_32dp"
+                android:text="@string/there_are_no_any_favorite_contents"
                 android:gravity="center"
                 android:textColor="?attr/colorBackgroundInvert"
                 android:fontFamily="?attr/fontLight"
-                android:textSize="32sp"
+                android:textSize="@dimen/dimen_32dp"
                 tools:ignore="SpUsage" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/wallpaperRv"
                 android:layout_width="match_parent"

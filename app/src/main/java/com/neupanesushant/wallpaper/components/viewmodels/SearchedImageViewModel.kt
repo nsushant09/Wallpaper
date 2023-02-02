@@ -6,27 +6,28 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neupanesushant.wallpaper.Endpoints
+import com.neupanesushant.wallpaper.components.data.NetworkRepository
 import com.neupanesushant.wallpaper.model.SearchResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SearchedImageViewModel(private val application : Application, private val endpoints: Endpoints) : ViewModel() {
+class SearchedImageViewModel(private val application : Application, private val network: NetworkRepository) : ViewModel() {
 
-    private val _isLoading : MutableLiveData<Boolean> = MutableLiveData()
-    val isLoading : LiveData<Boolean> get() = _isLoading
+    val isLoading : MutableLiveData<Boolean> = MutableLiveData()
 
     private val _searchedImageResponse : MutableLiveData<SearchResponse?> = MutableLiveData()
     val searchedImageResponse : LiveData<SearchResponse?> get() = _searchedImageResponse
 
     fun getSearchImages(query : String){
-        _isLoading.value = true
+        isLoading.value = true
         viewModelScope.launch{
             kotlin.runCatching {
-                _searchedImageResponse.value = endpoints.getSearchedPhotoWithPerPage(searchLabel = query, per_page = 80)
+                _searchedImageResponse.value = network.getSearchedPhotoPerPage(searchLabel = query, perPage = 80)
             }.onFailure {
                 _searchedImageResponse.value = null
             }
         }.invokeOnCompletion {
-            _isLoading.value = false
+            isLoading.value = false
         }
     }
 }

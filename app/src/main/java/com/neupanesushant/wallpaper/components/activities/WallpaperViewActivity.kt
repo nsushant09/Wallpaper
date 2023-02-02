@@ -1,4 +1,4 @@
-package com.neupanesushant.wallpaper.components
+package com.neupanesushant.wallpaper.components.activities
 
 import android.app.WallpaperManager
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -18,6 +19,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.neupanesushant.wallpaper.R
 import com.neupanesushant.wallpaper.components.data.AndroidDownloader
 import com.neupanesushant.wallpaper.components.data.Downloader
+import com.neupanesushant.wallpaper.components.extras.DialogUtils
+import com.neupanesushant.wallpaper.components.extras.SystemServiceManagers
 import com.neupanesushant.wallpaper.components.viewmodels.WallpaperViewModel
 import com.neupanesushant.wallpaper.databinding.ActivityWallpaperViewBinding
 import com.neupanesushant.wallpaper.model.Constants
@@ -79,20 +82,28 @@ class WallpaperViewActivity : AppCompatActivity() {
         }
 
         binding.btnInfo.setOnClickListener {
-
+            showImageInfo()
         }
 
         binding.btnDownload.setOnClickListener {
-            downloadImage()
+            if(SystemServiceManagers.isInternetConnected(this)){
+                downloadImage()
+            }else{
+                DialogUtils.neutralAlertDialog(this, "Connectivity Problem", "Please make sure you have internet connection \n\nRetry your download after connection")
+            }
         }
 
         binding.btnApply.setOnClickListener {
             if (isApplyButtonActive) {
-                applyWallpaper()
-                isApplyButtonActive = false
-                Handler(Looper.getMainLooper()).postDelayed(
-                    { isApplyButtonActive = true }, 10000
-                )
+                if(SystemServiceManagers.isInternetConnected(this)){
+                    applyWallpaper()
+                    isApplyButtonActive = false
+                    Handler(Looper.getMainLooper()).postDelayed(
+                        { isApplyButtonActive = true }, 10000
+                    )
+                }else{
+                    DialogUtils.neutralAlertDialog(this, "Connectivity Problem", "Please make sure you have internet connection")
+                }
             }
         }
     }
@@ -166,5 +177,22 @@ class WallpaperViewActivity : AppCompatActivity() {
     private fun getImageUri(fileDir: File, name: String): Uri {
         val newFile = File(fileDir, name)
         return FileProvider.getUriForFile(this, this.packageName + ".provider", newFile)
+    }
+
+    private fun showImageInfo(){
+        var string = ""
+
+        string += "Photographer\n${wallpaperPhoto.photographer}\n\n"
+        string+= "Photographer Link\n${wallpaperPhoto.photographer_url}\n\n"
+        string += "Average Color\n${wallpaperPhoto.avg_color}\n\n"
+        if(isCurrentPhotoFavorite){
+            string += "Favorites\n\n"
+        }else{
+            string += "Not Favorites\n\n"
+        }
+        string += "Description\n${wallpaperPhoto.alt}"
+
+        DialogUtils.neutralAlertDialog(this, "Image Info", string)
+
     }
 }

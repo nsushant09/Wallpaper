@@ -5,5 +5,7 @@
     <color name="black_variant">#0F0F0F</color>
     <color name="white_variant">#F0F0F0</color>
     <color name="dark_green">#5b7c75</color>
+    <color name="dark_green_opacity_40">#665B7C75</color>
     <color name="light_green">#d9e2e1</color>
+    <color name="light_green_opacity_40">#66D9E2E1</color>
 </resources>

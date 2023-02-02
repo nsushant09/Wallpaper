@@ -1,4 +1,4 @@
-package com.neupanesushant.wallpaper.components
+package com.neupanesushant.wallpaper.components.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.neupanesushant.wallpaper.R
 import com.neupanesushant.wallpaper.adapter.CategoryDisplayAdapter
+import com.neupanesushant.wallpaper.components.extras.BottomSheetCallback
 import com.neupanesushant.wallpaper.databinding.BottomSheetCategoryBinding
 import com.neupanesushant.wallpaper.model.Constants
 

@@ -7,18 +7,50 @@
         <item name="android:textColor">?attr/colorBackgroundInvert</item>
     </style>
 
+<!--    Bottom Sheet-->
     <style name="ModalBottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="backgroundTint">?attr/greenAccordingBgInvert</item>
         <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
     </style>
 
+    <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
+    </style>
+
+<!--    Dialog-->
+    <style name="MaterialAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">?attr/greenAccordingBg</item>
+        <item name="colorSurface">?attr/colorBWAccordingBg</item>
+        <item name="colorOnSurface">?attr/colorBWAccordingBgInvert</item>
+        <item name="alertDialogStyle">@style/MaterialAlertDialogStyle</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.App.Body.Text</item>
+    </style>
+
+    <style name="MaterialAlertDialogStyle" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.Medium</item>
+    </style>
+
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="fontFamily">?attr/fontRegular</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="MaterialAlertDialog.App.Body.Text" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="fontFamily">?attr/fontLight</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+<!--    Shape Appearance-->
     <style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/dimen_24dp</item>
     </style>
 
-    <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
+    <style name="ShapeAppearance.App.Medium" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/dimen_16dp</item>
     </style>
+
 
 </resources>

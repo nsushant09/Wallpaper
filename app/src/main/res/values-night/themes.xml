@@ -10,13 +10,17 @@
         <item name="colorBWAccordingBgInvert">@color/white</item>
 
         <!--        Other attributes mapping-->
+        <item name="app_logo">@drawable/app_logo_alternate</item>
         <item name="fontExtraLight">@font/lexend_extralight</item>
         <item name="fontLight">@font/lexend_light</item>
         <item name="fontRegular">@font/lexend_regular</item>
         <item name="fontSemiBold">@font/lexend_semibold</item>
         <item name="semiboldHeader">@style/SemiboldHeader</item>
         <item name="greenAccordingBg">@color/light_green</item>
+        <item name="greenAccordingBgOpacity">@color/light_green_opacity_40</item>
         <item name="greenAccordingBgInvert">@color/dark_green</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
+
+        <item name="materialAlertDialogTheme">@style/MaterialAlertDialogTheme</item>
     </style>
 </resources>

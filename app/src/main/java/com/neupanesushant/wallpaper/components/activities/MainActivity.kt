@@ -1,21 +1,21 @@
-package com.neupanesushant.wallpaper.components
+package com.neupanesushant.wallpaper.components.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.ActionMode
-import android.view.Gravity
-import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.Fade
-import androidx.transition.Slide
-import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.neupanesushant.wallpaper.adapter.WallpaperDisplayAdapter
+import com.neupanesushant.wallpaper.components.extras.BottomSheetCallback
+import com.neupanesushant.wallpaper.components.extras.DialogUtils
+import com.neupanesushant.wallpaper.components.extras.SystemServiceManagers
+import com.neupanesushant.wallpaper.components.fragment.CategoryBottomSheet
 import com.neupanesushant.wallpaper.components.viewmodels.MainViewModel
+import com.neupanesushant.wallpaper.components.viewmodels.ResponseCacheViewModel
 import com.neupanesushant.wallpaper.databinding.ActivityMainBinding
 import com.neupanesushant.wallpaper.hideKeyboard
 import com.neupanesushant.wallpaper.model.Constants
@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel: MainViewModel by inject()
+    private val cacheViewModel: ResponseCacheViewModel by inject()
     private val onImageClick: (Photo) -> Unit = { photo ->
         val intent = Intent(this, WallpaperViewActivity::class.java)
         intent.putExtra(Constants.WALLPAPER_PHOTO, photo)
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupViews() {
         binding.wallpaperRv.layoutManager = GridLayoutManager(this, 2)
         binding.searchEt.visibility = View.GONE
-        mainViewModel.getRandomImages()
+        cacheViewModel.getSearchResponse("Random")
     }
 
     private fun setupEventListener() {
@@ -59,8 +60,10 @@ class MainActivity : AppCompatActivity() {
             categoryBottomSheet.show(supportFragmentManager, categoryBottomSheet::class.java.name)
         }
 
-        binding.btnCollection.setOnClickListener {
-            this.showText("This feature will be added soon!!!")
+        binding.btnFavorites.setOnClickListener {
+            Intent(this, FavoritesActivity::class.java).apply {
+                startActivity(this)
+            }
         }
 
         binding.btnSearch.setOnClickListener {
@@ -73,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.searchEt.setOnEditorActionListener { _, actionId, _ ->
 
-            if(actionId == EditorInfo.IME_ACTION_SEARCH){
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.searchEt.clearFocus()
                 binding.searchEt.hideKeyboard()
                 callSearchedImageActivity(binding.searchEt.text.toString())
@@ -85,14 +88,34 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupObservers() {
         mainViewModel.imageResponse.observe(this) {
-            val rvWallpaperAdapter = WallpaperDisplayAdapter(this, it.photos, onImageClick)
-            binding.wallpaperRv.adapter = rvWallpaperAdapter
+            setupWallpaperRv(it.photos)
+            cacheViewModel.addSearchResponse("Random", it)
         }
 
-        mainViewModel.isLoading.observe(this){
+        cacheViewModel.responseNotFound.observe(this){
+            if(it)
+                if(SystemServiceManagers.isInternetConnected(this)){
+                    mainViewModel.getRandomImages()
+                }else{
+                    mainViewModel.isLoading.value = false
+                    DialogUtils.neutralAlertDialog(this, "Connectivity Problem", "Please make sure you have internet connection")
+                }
+        }
+
+        cacheViewModel.searchResponse.observe(this){
+            setupWallpaperRv(it.photos)
+        }
+
+        mainViewModel.isLoading.observe(this) {
             binding.progressBar.isVisible = it
             binding.wallpaperRv.isVisible = !it
         }
+    }
+
+    private fun setupWallpaperRv(list: List<Photo>) {
+        val rvWallpaperAdapter = WallpaperDisplayAdapter(this, list, onImageClick)
+        binding.wallpaperRv.adapter = rvWallpaperAdapter
+        mainViewModel.isLoading.value = false
     }
 
     private fun callSearchedImageActivity(searchQuery: String) {
