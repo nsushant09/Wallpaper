@@ -21,8 +21,8 @@ interface SearchResponseDAO {
     suspend fun deleteSearchResponse(deleteQuery : String)
 
     @Query("SELECT * FROM " + Constants.ROOM_SEARCHRESPONSE_TABLE)
-    suspend fun getAllSearchResponse() : List<SearchResponsePersistence>
+    suspend fun getAllSearchResponse() : List<SearchResponsePersistence>?
 
     @RawQuery
-    fun getRequireSearchResponse(query : SupportSQLiteQuery) : SearchResponsePersistence?
+    suspend fun getRequireSearchResponse(query : SupportSQLiteQuery) : SearchResponsePersistence?
 }

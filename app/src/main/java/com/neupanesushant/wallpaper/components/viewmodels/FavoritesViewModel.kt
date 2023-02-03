@@ -5,11 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.neupanesushant.wallpaper.components.data.LocalDataSource
 import com.neupanesushant.wallpaper.model.Photo
 import com.neupanesushant.wallpaper.persistence.FavoritesDAO
 import kotlinx.coroutines.launch
 
-class FavoritesViewModel(private val application : Application, private val favoritesDAO: FavoritesDAO) : ViewModel() {
+class FavoritesViewModel(private val application : Application, private val localDataSource: LocalDataSource) : ViewModel() {
 
     private val _favoriteImagesList = MutableLiveData<List<Photo>>()
     val favoriteImagesList : LiveData<List<Photo>> get() = _favoriteImagesList
@@ -20,7 +21,7 @@ class FavoritesViewModel(private val application : Application, private val favo
     fun getFavorites(){
         _isLoading.value = true
         viewModelScope.launch{
-            val response = favoritesDAO.getAllFavorites()
+            val response = localDataSource.getAllFavorites()
 
             if(response != null){
                 val photoList = response.mapNotNull {

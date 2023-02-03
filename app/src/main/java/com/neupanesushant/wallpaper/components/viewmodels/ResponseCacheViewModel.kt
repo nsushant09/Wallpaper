@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.neupanesushant.wallpaper.components.data.LocalDataSource
 import com.neupanesushant.wallpaper.components.data.NetworkRepository
 import com.neupanesushant.wallpaper.components.extras.SearchResponseCache
 import com.neupanesushant.wallpaper.model.Constants
@@ -20,8 +21,7 @@ import kotlinx.coroutines.launch
 
 class ResponseCacheViewModel(
     private val application: Application,
-    private val favoritesDAO: FavoritesDAO,
-    private val searchResponseDAO: SearchResponseDAO,
+    private val localDataSource: LocalDataSource,
     private val network: NetworkRepository
 ) : ViewModel() {
 
@@ -33,7 +33,7 @@ class ResponseCacheViewModel(
 
     fun addSearchResponse(searchQuery: String, searchResponse: SearchResponse) {
         viewModelScope.launch(Dispatchers.IO) {
-            searchResponseDAO.insertSearchResponse(
+            localDataSource.insertSearchResponse(
                 SearchResponsePersistence(
                     searchQuery,
                     searchResponse
@@ -48,7 +48,7 @@ class ResponseCacheViewModel(
 
     fun removeSearchResponse(deleteQuery: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            searchResponseDAO.deleteSearchResponse(deleteQuery)
+            localDataSource.deleteSearchResponse(deleteQuery)
         }.invokeOnCompletion {
             if (it == null) {
                 SearchResponseCache.queryResponseMap.remove(deleteQuery)
@@ -58,7 +58,7 @@ class ResponseCacheViewModel(
 
     fun updateSearchResponse(searchQuery: String, newSearchResponse: SearchResponse) {
         viewModelScope.launch(Dispatchers.IO) {
-            searchResponseDAO.updateSearchResponse(
+            localDataSource.updateSearchResponse(
                 SearchResponsePersistence(
                     searchQuery,
                     newSearchResponse
@@ -85,9 +85,7 @@ class ResponseCacheViewModel(
         viewModelScope.launch(Dispatchers.IO) {
 
             try {
-                val response = searchResponseDAO.getRequireSearchResponse(
-                    SimpleSQLiteQuery("SELECT * FROM " + Constants.ROOM_SEARCHRESPONSE_TABLE + " WHERE searchQuery = '" + searchQuery + "' LIMIT 1")
-                )
+                val response = localDataSource.getRequireSearchResponse(searchQuery)
                 if (response == null) {
                     _responseNotFound.postValue(true)
                 } else {
