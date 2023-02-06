@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
+import com.neupanesushant.wallpaper.components.data.LocalDataSource
+import com.neupanesushant.wallpaper.components.data.LocalRepositoryImpl
 import com.neupanesushant.wallpaper.components.data.NetworkRepository
 import com.neupanesushant.wallpaper.components.data.NetworkRepositoryImpl
 import com.neupanesushant.wallpaper.components.viewmodels.*
@@ -19,11 +21,9 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
-const val BASE_URL_PEXELS = "https://api.pexels.com/"
-const val PEXELS_API_KEY = "563492ad6f9170000100000143117b6d868a4e458df8fc34a264a629"
 fun appModules() = module {
 
+    val BASE_URL_PEXELS = "https://api.pexels.com/"
     single {
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -49,6 +49,10 @@ fun appModules() = module {
         get<WallpaperDatabase>().searchResponseDao()
     }
 
+    single<LocalDataSource>{
+        LocalRepositoryImpl(get(), get())
+    }
+
     single<NetworkRepository> {
         NetworkRepositoryImpl(get())
     }
@@ -70,7 +74,7 @@ fun appModules() = module {
     }
 
     viewModel{
-        ResponseCacheViewModel(androidApplication(), get(), get(), get())
+        ResponseCacheViewModel(androidApplication(), get(), get())
     }
 
 }

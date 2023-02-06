@@ -10,6 +10,9 @@ import com.neupanesushant.wallpaper.components.data.NetworkRepository
 import com.neupanesushant.wallpaper.model.SearchResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val application: Application, private val network : NetworkRepository) :
@@ -23,9 +26,12 @@ class MainViewModel(private val application: Application, private val network : 
     fun getRandomImages() {
         isLoading.value = true
         viewModelScope.launch{
-            _imageResponse.value = network.getSearchedPhotoPerPage(searchLabel = "Random", perPage = 100)
-        }.invokeOnCompletion {
-            isLoading.value = false
+            network.getSearchedPhotoPerPage(searchLabel = "Random", perPage = 100)
+                .flowOn(Dispatchers.IO)
+                .catch{}
+                .collectLatest {
+                    _imageResponse.value = it
+                }
         }
     }
 

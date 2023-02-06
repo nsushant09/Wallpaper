@@ -1,4 +1,4 @@
-package com.neupanesushant.wallpaper.components.data
+package com.neupanesushant.wallpaper.components.extras
 
 import android.app.DownloadManager
 import android.content.BroadcastReceiver

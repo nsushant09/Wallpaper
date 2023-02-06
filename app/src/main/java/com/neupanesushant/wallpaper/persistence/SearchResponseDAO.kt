@@ -7,6 +7,7 @@ import com.neupanesushant.wallpaper.model.Constants
 import com.neupanesushant.wallpaper.model.Favorites
 import com.neupanesushant.wallpaper.model.SearchResponse
 import com.neupanesushant.wallpaper.model.SearchResponsePersistence
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SearchResponseDAO {
@@ -21,8 +22,8 @@ interface SearchResponseDAO {
     suspend fun deleteSearchResponse(deleteQuery : String)
 
     @Query("SELECT * FROM " + Constants.ROOM_SEARCHRESPONSE_TABLE)
-    suspend fun getAllSearchResponse() : List<SearchResponsePersistence>
+    fun getAllSearchResponse() : Flow<List<SearchResponsePersistence>?>
 
     @RawQuery
-    fun getRequireSearchResponse(query : SupportSQLiteQuery) : SearchResponsePersistence?
+    suspend fun getRequireSearchResponse(query : SupportSQLiteQuery) : SearchResponsePersistence?
 }
