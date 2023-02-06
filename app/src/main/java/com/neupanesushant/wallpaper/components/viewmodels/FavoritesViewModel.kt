@@ -8,32 +8,37 @@ import androidx.lifecycle.viewModelScope
 import com.neupanesushant.wallpaper.components.data.LocalDataSource
 import com.neupanesushant.wallpaper.model.Photo
 import com.neupanesushant.wallpaper.persistence.FavoritesDAO
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class FavoritesViewModel(private val application : Application, private val localDataSource: LocalDataSource) : ViewModel() {
+class FavoritesViewModel(
+    private val application: Application, private val localDataSource: LocalDataSource
+) : ViewModel() {
 
     private val _favoriteImagesList = MutableLiveData<List<Photo>>()
-    val favoriteImagesList : LiveData<List<Photo>> get() = _favoriteImagesList
+    val favoriteImagesList: LiveData<List<Photo>> get() = _favoriteImagesList
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading : LiveData<Boolean> get() = _isLoading
+    val isLoading = MutableLiveData<Boolean>()
 
-    fun getFavorites(){
-        _isLoading.value = true
-        viewModelScope.launch{
-            val response = localDataSource.getAllFavorites()
+    fun getFavorites() {
+        isLoading.value = true
+        viewModelScope.launch {
 
-            if(response != null){
-                val photoList = response.mapNotNull {
-                    it.photo
+            localDataSource.getAllFavorites()
+                .flowOn(Dispatchers.IO)
+                .collectLatest{
+                if (it == null) {
+                    _favoriteImagesList.postValue(emptyList())
+                } else {
+                    _favoriteImagesList.postValue(it.mapNotNull {
+                        it.photo
+                    })
+                    isLoading.value = false
                 }
-                _favoriteImagesList.postValue(photoList)
-            }else{
-                _favoriteImagesList.postValue(emptyList())
             }
-
-        }.invokeOnCompletion {
-            _isLoading.value = false
         }
     }
 }

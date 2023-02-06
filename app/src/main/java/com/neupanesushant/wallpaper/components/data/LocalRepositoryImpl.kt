@@ -6,6 +6,7 @@ import com.neupanesushant.wallpaper.model.Favorites
 import com.neupanesushant.wallpaper.model.SearchResponsePersistence
 import com.neupanesushant.wallpaper.persistence.FavoritesDAO
 import com.neupanesushant.wallpaper.persistence.SearchResponseDAO
+import kotlinx.coroutines.flow.Flow
 
 class LocalRepositoryImpl(private val favoritesDAO: FavoritesDAO, private val searchResponseDAO: SearchResponseDAO) : LocalDataSource {
     override suspend fun insertFavorites(favorites: Favorites) {
@@ -20,7 +21,7 @@ class LocalRepositoryImpl(private val favoritesDAO: FavoritesDAO, private val se
         favoritesDAO.delete(favorites)
     }
 
-    override suspend fun getAllFavorites(): List<Favorites>? {
+    override fun getAllFavorites(): Flow<List<Favorites>?> {
         return favoritesDAO.getAllFavorites()
     }
 
@@ -42,7 +43,7 @@ class LocalRepositoryImpl(private val favoritesDAO: FavoritesDAO, private val se
         searchResponseDAO.deleteSearchResponse(deleteQuery)
     }
 
-    override suspend fun getAllSearchResponse(): List<SearchResponsePersistence>? {
+    override fun getAllSearchResponse(): Flow<List<SearchResponsePersistence>?> {
         return searchResponseDAO.getAllSearchResponse()
     }
 

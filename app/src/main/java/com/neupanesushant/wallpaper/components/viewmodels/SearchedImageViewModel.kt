@@ -9,25 +9,30 @@ import com.neupanesushant.wallpaper.Endpoints
 import com.neupanesushant.wallpaper.components.data.NetworkRepository
 import com.neupanesushant.wallpaper.model.SearchResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class SearchedImageViewModel(private val application : Application, private val network: NetworkRepository) : ViewModel() {
+class SearchedImageViewModel(
+    private val application: Application,
+    private val network: NetworkRepository
+) : ViewModel() {
 
-    val isLoading : MutableLiveData<Boolean> = MutableLiveData()
+    val isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
-    private val _searchedImageResponse : MutableLiveData<SearchResponse?> = MutableLiveData()
-    val searchedImageResponse : LiveData<SearchResponse?> get() = _searchedImageResponse
+    private val _searchedImageResponse: MutableLiveData<SearchResponse?> = MutableLiveData()
+    val searchedImageResponse: LiveData<SearchResponse?> get() = _searchedImageResponse
 
-    fun getSearchImages(query : String){
+    fun getSearchImages(query: String) {
         isLoading.value = true
-        viewModelScope.launch{
-            kotlin.runCatching {
-                _searchedImageResponse.value = network.getSearchedPhotoPerPage(searchLabel = query, perPage = 80)
-            }.onFailure {
-                _searchedImageResponse.value = null
-            }
-        }.invokeOnCompletion {
-            isLoading.value = false
+        viewModelScope.launch {
+            network.getSearchedPhotoPerPage(searchLabel = query, perPage = 80)
+                .flowOn(Dispatchers.IO)
+                .catch { _searchedImageResponse.value = null }
+                .collectLatest {
+                    _searchedImageResponse.value = it
+                }
         }
     }
 }
