@@ -18,6 +18,7 @@ import com.neupanesushant.wallpaper.persistence.FavoritesDAO
 import com.neupanesushant.wallpaper.persistence.SearchResponseDAO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class ResponseCacheViewModel(
     private val application: Application,
@@ -36,7 +37,8 @@ class ResponseCacheViewModel(
             localDataSource.insertSearchResponse(
                 SearchResponsePersistence(
                     searchQuery,
-                    searchResponse
+                    searchResponse,
+                    Date().time
                 )
             )
         }.invokeOnCompletion {
@@ -61,7 +63,8 @@ class ResponseCacheViewModel(
             localDataSource.updateSearchResponse(
                 SearchResponsePersistence(
                     searchQuery,
-                    newSearchResponse
+                    newSearchResponse,
+                    Date().time
                 )
             )
         }.invokeOnCompletion {
@@ -89,10 +92,15 @@ class ResponseCacheViewModel(
                 if (response == null) {
                     _responseNotFound.postValue(true)
                 } else {
-                    response.searchResponse?.let {
-                        _searchResponse.postValue(it)
+                    if ((response.lastUpdated + 604800000) > Date().time) {
+                        // It will call add in activity but OnConflict strategy is replace.
+                        _responseNotFound.postValue(true)
+                    } else {
+                        response.searchResponse?.let {
+                            _searchResponse.postValue(it)
+                        }
+                        _responseNotFound.postValue(false)
                     }
-                    _responseNotFound.postValue(false)
                 }
             } catch (e: SQLiteException) {
                 e.printStackTrace()
