@@ -14,10 +14,11 @@ import org.koin.android.ext.android.inject
 
 class FavoritesActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityFavoritesBinding
-    private val favoritesViewModel : FavoritesViewModel by inject()
+    private lateinit var binding: ActivityFavoritesBinding
+    private val favoritesViewModel: FavoritesViewModel by inject()
+    private lateinit var adapter: WallpaperDisplayAdapter
 
-    private val onImageClick : (Photo) -> Unit = { photo ->
+    private val onImageClick: (Photo) -> Unit = { photo ->
         val intent = Intent(this, WallpaperViewActivity::class.java)
         intent.putExtra(Constants.WALLPAPER_PHOTO, photo)
         startActivity(intent)
@@ -33,36 +34,37 @@ class FavoritesActivity : AppCompatActivity() {
         setupObserver()
     }
 
-    private fun setupViews(){
-        binding.wallpaperRv.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
+    private fun setupViews() {
+        binding.wallpaperRv.layoutManager =
+            GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
         binding.notFoundTv.isVisible = false
         favoritesViewModel.getFavorites()
     }
 
-    private fun setupEventListener(){
+    private fun setupEventListener() {
         binding.btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }
 
-    private fun setupObserver(){
-        favoritesViewModel.favoriteImagesList.observe(this){
-            if(it == null || it.isEmpty()){
-                setVisibilityAccordingResult(isResultFound = false)
-            }else{
-                setVisibilityAccordingResult(isResultFound = true)
-                val adapter = WallpaperDisplayAdapter(this, it, onImageClick)
+    private fun setupObserver() {
+        favoritesViewModel.favoriteImagesList.observe(this) {
+            if (this@FavoritesActivity::adapter.isInitialized) {
+                setVisibilityAccordingResult(it.isNotEmpty())
+                adapter.changeList(it)
+            } else {
+                adapter = WallpaperDisplayAdapter(this, it, onImageClick)
                 binding.wallpaperRv.adapter = adapter
             }
         }
 
-        favoritesViewModel.isLoading.observe(this){
+        favoritesViewModel.isLoading.observe(this) {
             binding.progressBar.isVisible = it
             binding.wallpaperRv.isVisible = !it
         }
     }
 
-    private fun setVisibilityAccordingResult(isResultFound : Boolean){
+    private fun setVisibilityAccordingResult(isResultFound: Boolean) {
         binding.wallpaperRv.isVisible = isResultFound
         binding.notFoundTv.isVisible = !isResultFound
     }

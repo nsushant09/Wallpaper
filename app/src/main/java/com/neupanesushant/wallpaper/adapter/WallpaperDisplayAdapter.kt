@@ -1,5 +1,6 @@
 package com.neupanesushant.wallpaper.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,7 +16,7 @@ import com.neupanesushant.wallpaper.model.Photo
 
 class WallpaperDisplayAdapter(
     private val context: Context,
-    private val imageList: List<Photo>,
+    private var imageList: List<Photo>,
     private val onImageClick: (Photo) -> Unit
 ) :
     RecyclerView.Adapter<WallpaperDisplayAdapter.ViewHolder>() {
@@ -58,4 +59,10 @@ class WallpaperDisplayAdapter(
     }
 
     override fun getItemCount(): Int = imageList.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    public fun changeList(newList : List<Photo>){
+        imageList = newList
+        notifyDataSetChanged()
+    }
 }
