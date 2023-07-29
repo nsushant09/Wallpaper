@@ -33,7 +33,7 @@
         </provider>
 
         <activity
-            android:name=".components.activities.MainActivity"
+            android:name=".view.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,19 +43,19 @@
         </activity>
 
         <activity
-            android:name=".components.activities.SearchedImageActivity"
+            android:name=".view.activities.SearchedImageActivity"
             android:exported="false" />
 
         <activity
-            android:name=".components.activities.WallpaperViewActivity"
+            android:name=".view.activities.WallpaperViewActivity"
             android:exported="false" />
 
         <activity
-            android:name=".components.activities.FavoritesActivity"
+            android:name=".view.activities.FavoritesActivity"
             android:exported="false" />
 
         <receiver
-            android:name=".components.extras.DownloadCompletedReciever"
+            android:name=".domain.usecase.DownloadCompletedReciever"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
