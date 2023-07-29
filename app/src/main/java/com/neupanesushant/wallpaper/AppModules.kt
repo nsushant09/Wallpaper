@@ -7,7 +7,6 @@ import com.neupanesushant.wallpaper.data.datasource.LocalDataSource
 import com.neupanesushant.wallpaper.data.repository.LocalRepositoryImpl
 import com.neupanesushant.wallpaper.data.repository.NetworkRepository
 import com.neupanesushant.wallpaper.data.repository.NetworkRepositoryImpl
-import com.neupanesushant.wallpaper.components.viewmodels.*
 import com.neupanesushant.wallpaper.data.repository.Endpoints
 import com.neupanesushant.wallpaper.domain.model.Constants
 import com.neupanesushant.wallpaper.data.datasource.FavoritesDAO

@@ -21,6 +21,7 @@ android {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("local.properties").newDataInputStream())
         buildConfigField "String", "PEXELS_API_KEY", "\"${properties.getProperty("PEXELS_API_KEY")}\""
+//        manifestPlaceholders = [googleAdsApiKey :"${properties.getProperty('')}"]
 
     }
 
@@ -73,4 +74,6 @@ dependencies {
     androidTestImplementation project(path: ':app')
     implementation "androidx.room:room-ktx:2.5.0"
     kapt("androidx.room:room-compiler:2.5.0")
+
+    implementation 'com.google.android.gms:play-services-ads:22.2.0'
 }
