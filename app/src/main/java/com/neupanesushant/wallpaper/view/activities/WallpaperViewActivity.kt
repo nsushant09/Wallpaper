@@ -31,6 +31,7 @@ import com.neupanesushant.wallpaper.domain.usecase.Downloader
 import com.neupanesushant.wallpaper.domain.usecase.ad.InterstitialAdsManager
 import com.neupanesushant.wallpaper.view.viewmodels.WallpaperViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -131,18 +132,21 @@ class WallpaperViewActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            var intent: Intent? = null
+            var deferredIntent: Deferred<Intent?>? = null
             CoroutineScope(Dispatchers.Default).launch {
-                val deferredIntent = async {
+                deferredIntent = async {
                     getWallpaperIntent()
                 }
-
-                intent = deferredIntent.await()
             }
+
             interstitialAdsManager.setContentCallback(getContentCallBack {
                 interstitialAdsManager.loadAd()
 
-                intent?.let { intent ->
+                if (deferredIntent == null)
+                    return@getContentCallBack
+
+                CoroutineScope(Dispatchers.Default).launch {
+                    val intent = deferredIntent!!.await() ?: return@launch
                     startActivityForResult(intent, WALLPAPER_SET_REQUEST_CODE)
                     isApplyButtonActive = false
                     Handler(Looper.getMainLooper()).postDelayed(
@@ -152,7 +156,6 @@ class WallpaperViewActivity : AppCompatActivity() {
             })
 
             interstitialAdsManager.showAd(this)
-
         }
     }
 
