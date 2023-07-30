@@ -32,7 +32,7 @@
                 android:layout_width="@dimen/dimen_48dp"
                 android:layout_height="@dimen/dimen_48dp"
                 android:contentDescription="@string/favorites"
-                android:padding="@dimen/dimen_8dp"
+                android:padding="@dimen/dimen_12dp"
 
                 android:src="@drawable/ic_category"
                 app:layout_constraintBottom_toBottomOf="@id/searchEt"
@@ -66,7 +66,7 @@
                 android:layout_width="@dimen/dimen_48dp"
                 android:layout_height="@dimen/dimen_48dp"
                 android:contentDescription="@string/favorites"
-                android:padding="@dimen/dimen_8dp"
+                android:padding="@dimen/dimen_12dp"
 
                 android:src="@drawable/ic_heart"
                 app:layout_constraintBottom_toBottomOf="@id/searchEt"
