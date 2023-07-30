@@ -28,6 +28,7 @@ import com.neupanesushant.wallpaper.domain.model.Constants
 import com.neupanesushant.wallpaper.domain.model.Photo
 import com.neupanesushant.wallpaper.domain.usecase.AndroidDownloader
 import com.neupanesushant.wallpaper.domain.usecase.Downloader
+import com.neupanesushant.wallpaper.domain.usecase.ad.AdCodes
 import com.neupanesushant.wallpaper.domain.usecase.ad.InterstitialAdsManager
 import com.neupanesushant.wallpaper.view.viewmodels.WallpaperViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -60,7 +61,7 @@ class WallpaperViewActivity : AppCompatActivity() {
 
         interstitialAdsManager =
             InterstitialAdsManager(this, addLoadCallback)
-        interstitialAdsManager.loadAd()
+        interstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
 
         if (intent.getParcelableExtra<Photo>(Constants.WALLPAPER_PHOTO) == null) {
             finish()
@@ -112,7 +113,7 @@ class WallpaperViewActivity : AppCompatActivity() {
             }
 
             interstitialAdsManager.setContentCallback(getContentCallBack {
-                interstitialAdsManager.loadAd()
+                interstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
                 downloadImage()
             })
             interstitialAdsManager.showAd(this)
@@ -140,7 +141,7 @@ class WallpaperViewActivity : AppCompatActivity() {
             }
 
             interstitialAdsManager.setContentCallback(getContentCallBack {
-                interstitialAdsManager.loadAd()
+                interstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
 
                 if (deferredIntent == null)
                     return@getContentCallBack
@@ -245,7 +246,7 @@ class WallpaperViewActivity : AppCompatActivity() {
         }
 
         override fun onAdLoaded(interstitialAd: InterstitialAd) {
-            interstitialAdsManager.setAd<InterstitialAd>(interstitialAd)
+            interstitialAdsManager.setAd(interstitialAd)
         }
     }
 }

@@ -11,37 +11,38 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 class InterstitialAdsManager(
     private val context: Context,
     private val adLoadCallback: InterstitialAdLoadCallback
-) : AdsManager {
+) {
 
     private var interstitialAd: InterstitialAd? = null
-    override val adRequest: AdRequest get() = AdRequest.Builder().build()
+
+    private val adRequest: AdRequest get() = AdRequest.Builder().build()
 
     init {
         initialize()
     }
 
-    override fun initialize() {
+    fun initialize() {
         MobileAds.initialize(context)
     }
 
-    override fun loadAd() {
+    fun loadAd(adCode : String) {
         InterstitialAd.load(
             context,
-            "ca-app-pub-3940256099942544/1033173712",
+            adCode,
             adRequest,
             adLoadCallback
         )
     }
 
-    override fun showAd(activity: Activity) {
+    fun showAd(activity: Activity) {
         interstitialAd?.show(activity)
     }
 
-    override fun <T> setAd(ad: T) {
-        interstitialAd = ad as InterstitialAd
+    fun setAd(ad: InterstitialAd) {
+        interstitialAd = ad
     }
 
-    override fun <T> setContentCallback(contentCallback: T) {
+    fun setContentCallback(contentCallback: FullScreenContentCallback) {
         interstitialAd?.fullScreenContentCallback = contentCallback as FullScreenContentCallback
     }
 }
