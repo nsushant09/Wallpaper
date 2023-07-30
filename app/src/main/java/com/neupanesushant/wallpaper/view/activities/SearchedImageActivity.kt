@@ -5,17 +5,20 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import com.neupanesushant.wallpaper.view.adapter.WallpaperDisplayAdapter
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.neupanesushant.wallpaper.databinding.ActivitySearchedImageBinding
 import com.neupanesushant.wallpaper.domain.extras.DialogUtils
 import com.neupanesushant.wallpaper.domain.extras.SystemServiceManagers
-import com.neupanesushant.wallpaper.view.viewmodels.ResponseCacheViewModel
-import com.neupanesushant.wallpaper.view.viewmodels.SearchedImageViewModel
-import com.neupanesushant.wallpaper.databinding.ActivitySearchedImageBinding
+import com.neupanesushant.wallpaper.domain.extras.showText
 import com.neupanesushant.wallpaper.domain.model.Constants
 import com.neupanesushant.wallpaper.domain.model.Photo
-import com.neupanesushant.wallpaper.domain.extras.showText
+import com.neupanesushant.wallpaper.domain.usecase.ad.InterstitialAdsManager
+import com.neupanesushant.wallpaper.view.adapter.WallpaperDisplayAdapter
+import com.neupanesushant.wallpaper.view.viewmodels.ResponseCacheViewModel
+import com.neupanesushant.wallpaper.view.viewmodels.SearchedImageViewModel
 import org.koin.android.ext.android.inject
-import java.util.*
+import java.util.Locale
 
 class SearchedImageActivity : AppCompatActivity() {
 
@@ -29,6 +32,7 @@ class SearchedImageActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private lateinit var interstitialAdManager: InterstitialAdsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +45,8 @@ class SearchedImageActivity : AppCompatActivity() {
             searchQuery = intent.getStringExtra(Constants.SEARCH_QUERY)!!
         }
 
+
+        interstitialAdManager = InterstitialAdsManager(this, adLoadCallback)
         setupView()
         setupEventListeners()
         setupObservers()
@@ -72,12 +78,16 @@ class SearchedImageActivity : AppCompatActivity() {
 
         cacheViewModel.responseNotFound.observe(this) {
             if (it)
-                if(SystemServiceManagers.isInternetConnected(this)){
+                if (SystemServiceManagers.isInternetConnected(this)) {
                     searchedImageViewModel.getSearchImages(searchQuery)
-                }else{
+                } else {
                     searchedImageViewModel.isLoading.value = false
                     setVisibilityAccordingResult(false)
-                    DialogUtils.neutralAlertDialog(this, "Connectivity Problem", "Please make sure you have internet connection")
+                    DialogUtils.neutralAlertDialog(
+                        this,
+                        "Connectivity Problem",
+                        "Please make sure you have internet connection"
+                    )
                 }
         }
 
@@ -103,4 +113,10 @@ class SearchedImageActivity : AppCompatActivity() {
         searchedImageViewModel.isLoading.value = false
     }
 
+    private val adLoadCallback = object : InterstitialAdLoadCallback() {
+        override fun onAdLoaded(interstitialAd: InterstitialAd) {
+            interstitialAdManager.setAd(interstitialAd)
+            interstitialAdManager.showAd(this@SearchedImageActivity)
+        }
+    }
 }

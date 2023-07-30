@@ -76,7 +76,7 @@ class ResponseCacheViewModel(
     fun getSearchResponse(searchQuery: String) {
 
         if (SearchResponseCache.queryResponseMap.contains(searchQuery)) {
-            _searchResponse.postValue(SearchResponseCache.queryResponseMap.get(searchQuery))
+            _searchResponse.postValue(SearchResponseCache.queryResponseMap[searchQuery])
             return
         }
 
@@ -84,19 +84,21 @@ class ResponseCacheViewModel(
 
             try {
                 val response = localDataSource.getRequireSearchResponse(searchQuery)
+
                 if (response == null) {
                     _responseNotFound.postValue(true)
-                } else {
-                    if ((response.lastUpdated + 604800000) > Date().time) {
-                        // It will call add in activity but OnConflict strategy is replace.
-                        _responseNotFound.postValue(true)
-                    } else {
-                        response.searchResponse?.let {
-                            _searchResponse.postValue(it)
-                        }
-                        _responseNotFound.postValue(false)
-                    }
+                    return@launch
                 }
+
+                if ((response.lastUpdated) > Date().time) {
+                    _responseNotFound.postValue(true)
+                } else {
+                    response.searchResponse?.let {
+                        _searchResponse.postValue(it)
+                    }
+                    _responseNotFound.postValue(false)
+                }
+
             } catch (e: SQLiteException) {
                 e.printStackTrace()
                 _responseNotFound.postValue(true)
