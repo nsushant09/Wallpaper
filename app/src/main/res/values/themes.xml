@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Wallpaper" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Wallpaper" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorBackground">@color/white_variant</item>
         <item name="colorBackgroundInvert">@color/black_variant</item>
         <item name="colorPrimary">@color/light_green</item>

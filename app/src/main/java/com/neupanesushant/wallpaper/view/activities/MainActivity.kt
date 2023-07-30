@@ -2,13 +2,10 @@ package com.neupanesushant.wallpaper.view.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.transition.Fade
-import androidx.transition.TransitionManager
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.LoadAdError
 import com.neupanesushant.wallpaper.databinding.ActivityMainBinding
@@ -53,11 +50,11 @@ class MainActivity : AppCompatActivity() {
     private fun setupViews() {
         bannerAdsManager.loadAd(binding.adView)
         binding.wallpaperRv.layoutManager = GridLayoutManager(this, 2)
-        binding.searchEt.visibility = View.GONE
         cacheViewModel.getSearchResponse("Random")
     }
 
     private fun setupEventListener() {
+
         binding.btnCategory.setOnClickListener {
             val categoryBottomSheet = CategoryBottomSheet.getInstance(object : BottomSheetCallback {
                 override fun onClick(string: String) {
@@ -73,14 +70,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnSearch.setOnClickListener {
-            val transition = Fade()
-            transition.duration = 300
-            transition.addTarget(binding.searchEt)
-            TransitionManager.beginDelayedTransition(binding.root, transition)
-            binding.searchEt.isVisible = !binding.searchEt.isVisible
-        }
-
         binding.searchEt.setOnEditorActionListener { _, actionId, _ ->
 
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -92,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        binding.adView.adListener = object : AdListener(){
+        binding.adView.adListener = object : AdListener() {
             override fun onAdFailedToLoad(p0: LoadAdError) {
                 binding.adView.isVisible = false
             }

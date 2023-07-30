@@ -90,7 +90,7 @@ class ResponseCacheViewModel(
                     return@launch
                 }
 
-                if ((response.lastUpdated) > Date().time) {
+                if ((response.lastUpdated + 60480000) < Date().time) {
                     _responseNotFound.postValue(true)
                 } else {
                     response.searchResponse?.let {

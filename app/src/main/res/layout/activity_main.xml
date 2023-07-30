@@ -2,155 +2,103 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
         android:scrollbarThumbVertical="?attr/greenAccordingBg"
-        >
+        android:scrollbars="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/dimen_32dp"
-            >
+            android:paddingBottom="@dimen/dimen_32dp">
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:indeterminateDrawable="@drawable/style_progressbar"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/searchEt"
-                android:layout_marginTop="@dimen/dimen_64dp"
-                android:indeterminateDrawable="@drawable/style_progressbar"
-                />
-            <TextView
-                android:id="@+id/wallpaperTitle"
-                style="@style/SemiboldHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/wallpapers"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="@dimen/dimen_16dp"
-                />
+                app:layout_constraintTop_toBottomOf="@id/adView" />
 
-            <LinearLayout
-                android:id="@+id/actionsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/btnCategory"
+                android:layout_width="@dimen/dimen_48dp"
+                android:layout_height="@dimen/dimen_48dp"
+                android:contentDescription="@string/favorites"
+                android:padding="@dimen/dimen_8dp"
 
-                android:layout_margin="@dimen/dimen_16dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/wallpaperTitle">
+                android:src="@drawable/ic_category"
+                app:layout_constraintBottom_toBottomOf="@id/searchEt"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/searchEt"
+                app:tint="?attr/colorPrimaryVariant" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCategory"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/dimen_56dp"
-                    android:layout_marginHorizontal="@dimen/dimen_4dp"
-                    android:layout_weight="1"
-
-                    android:backgroundTint="?attr/greenAccordingBg"
-                    android:fontFamily="@font/lexend_light"
-                    android:text="@string/category"
-                    android:textAllCaps="false"
-                    android:textColor="?attr/colorBackground"
-                    app:cornerRadius="@dimen/dimen_8dp"
-                    />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSearch"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/dimen_56dp"
-                    android:layout_marginHorizontal="@dimen/dimen_4dp"
-                    android:layout_weight="1"
-
-                    android:backgroundTint="?attr/greenAccordingBg"
-                    android:fontFamily="@font/lexend_light"
-                    android:text="@string/search"
-                    android:textAllCaps="false"
-                    android:textColor="?attr/colorBackground"
-                    app:cornerRadius="@dimen/dimen_8dp"
-                    app:elevation="@dimen/dimen_0dp"
-
-                    />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnFavorites"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/dimen_56dp"
-                    android:layout_marginHorizontal="@dimen/dimen_4dp"
-                    android:layout_weight="1"
-
-                    android:backgroundTint="?attr/greenAccordingBg"
-                    android:fontFamily="@font/lexend_light"
-                    android:text="@string/favorites"
-                    android:textAllCaps="false"
-                    android:textColor="?attr/colorBackground"
-                    app:cornerRadius="@dimen/dimen_8dp"
-                    app:elevation="@dimen/dimen_0dp"
-
-                    />
-
-            </LinearLayout>
 
             <EditText
                 android:id="@+id/searchEt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dimen_48dp"
 
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/actionsContainer"
+                android:layout_marginTop="@dimen/dimen_16dp"
                 android:background="@drawable/bg_search"
-                android:layout_marginHorizontal="@dimen/dimen_16dp"
-                android:layout_marginVertical="@dimen/dimen_8dp"
-
-                android:hint="@string/search"
+                android:fitsSystemWindows="true"
                 android:fontFamily="?attr/fontLight"
+                android:hint="@string/search"
+                android:paddingVertical="@dimen/dimen_4dp"
+                android:paddingHorizontal="@dimen/dimen_16dp"
+
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                android:fitsSystemWindows="true"
-                />
+                app:layout_constraintLeft_toRightOf="@id/btnCategory"
+                app:layout_constraintRight_toLeftOf="@id/btnFavorites"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.gms.ads.AdView
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
+
+            <ImageView
+                android:id="@+id/btnFavorites"
+                android:layout_width="@dimen/dimen_48dp"
+                android:layout_height="@dimen/dimen_48dp"
+                android:contentDescription="@string/favorites"
+                android:padding="@dimen/dimen_8dp"
+
+                android:src="@drawable/ic_heart"
+                app:layout_constraintBottom_toBottomOf="@id/searchEt"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/searchEt"
+                app:tint="?attr/colorPrimaryVariant" />
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/adView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dimen_16dp"
                 ads:adSize="BANNER"
-                android:layout_marginTop="@dimen/dimen_8dp"
                 ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
                 ads:layout_constraintLeft_toLeftOf="parent"
                 ads:layout_constraintRight_toRightOf="parent"
-                ads:layout_constraintTop_toBottomOf="@id/searchEt"
-                >
-            </com.google.android.gms.ads.AdView>
+                ads:layout_constraintTop_toBottomOf="@id/searchEt" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/wallpaperRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
+                android:layout_margin="@dimen/dimen_16dp"
                 android:layout_marginTop="@dimen/dimen_8dp"
+                android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/adView"
-                android:overScrollMode="never"
-                android:layout_margin="@dimen/dimen_16dp"
-                />
+                app:layout_constraintTop_toBottomOf="@id/adView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

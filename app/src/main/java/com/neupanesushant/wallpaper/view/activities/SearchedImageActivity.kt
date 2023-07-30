@@ -13,6 +13,7 @@ import com.neupanesushant.wallpaper.domain.extras.SystemServiceManagers
 import com.neupanesushant.wallpaper.domain.extras.showText
 import com.neupanesushant.wallpaper.domain.model.Constants
 import com.neupanesushant.wallpaper.domain.model.Photo
+import com.neupanesushant.wallpaper.domain.usecase.ad.AdCodes
 import com.neupanesushant.wallpaper.domain.usecase.ad.InterstitialAdsManager
 import com.neupanesushant.wallpaper.view.adapter.WallpaperDisplayAdapter
 import com.neupanesushant.wallpaper.view.viewmodels.ResponseCacheViewModel
@@ -45,8 +46,9 @@ class SearchedImageActivity : AppCompatActivity() {
             searchQuery = intent.getStringExtra(Constants.SEARCH_QUERY)!!
         }
 
-
         interstitialAdManager = InterstitialAdsManager(this, adLoadCallback)
+        interstitialAdManager.loadAd(AdCodes.SEARCHED_ACTIVITY_AD_UNIT)
+
         setupView()
         setupEventListeners()
         setupObservers()
