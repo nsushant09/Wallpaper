@@ -2,6 +2,8 @@ package com.neupanesushant.wallpaper.view.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -13,8 +15,10 @@ import com.neupanesushant.wallpaper.domain.extras.DialogUtils
 import com.neupanesushant.wallpaper.domain.extras.SystemServiceManagers
 import com.neupanesushant.wallpaper.domain.extras.hideKeyboard
 import com.neupanesushant.wallpaper.domain.model.Constants
+import com.neupanesushant.wallpaper.domain.model.KeyValue
 import com.neupanesushant.wallpaper.domain.model.Photo
 import com.neupanesushant.wallpaper.domain.usecase.ad.BannerAdsManager
+import com.neupanesushant.wallpaper.view.adapter.ImageSliderAdapter
 import com.neupanesushant.wallpaper.view.adapter.WallpaperDisplayAdapter
 import com.neupanesushant.wallpaper.view.fragment.BottomSheetCallback
 import com.neupanesushant.wallpaper.view.fragment.CategoryBottomSheet
@@ -25,13 +29,22 @@ import org.koin.android.ext.android.inject
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
     private val mainViewModel: MainViewModel by inject()
     private val cacheViewModel: ResponseCacheViewModel by inject()
+
     private val onImageClick: (Photo) -> Unit = { photo ->
         val intent = Intent(this, WallpaperViewActivity::class.java)
         intent.putExtra(Constants.WALLPAPER_PHOTO, photo)
         startActivity(intent)
     }
+
+    private val onSliderClick: (String) -> Unit = { string ->
+        callSearchedImageActivity(string)
+    }
+
+    private val handler = Handler(Looper.myLooper()!!)
+    private var sliderList = arrayListOf<KeyValue>()
 
     private lateinit var bannerAdsManager: BannerAdsManager
 
@@ -51,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         bannerAdsManager.loadAd(binding.adView)
         binding.wallpaperRv.layoutManager = GridLayoutManager(this, 2)
         cacheViewModel.getSearchResponse("Random")
+        setupSliderViewPager()
     }
 
     private fun setupEventListener() {
@@ -122,6 +136,38 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupSliderViewPager() {
+
+        if (!SystemServiceManagers.isInternetConnected(this)) {
+            binding.vpImageSlider.isVisible = false
+            return
+        }
+
+        val adapter =
+            ImageSliderAdapter(this, sliderList, onSliderClick)
+        binding.vpImageSlider.adapter = adapter
+
+        var imageSliderRunnable: Runnable? = null
+
+        imageSliderRunnable = Runnable {
+            val currentItem = binding.vpImageSlider.currentItem
+            if (sliderList.size - 1 == currentItem) {
+                binding.vpImageSlider.setCurrentItem(
+                    0,
+                    true
+                )
+            } else {
+                binding.vpImageSlider.setCurrentItem(
+                    currentItem + 1,
+                    true
+                )
+            }
+            handler.postDelayed(imageSliderRunnable!!, 5000)
+        }
+
+        handler.postDelayed(imageSliderRunnable, 5000)
+    }
+
     private fun setupWallpaperRv(list: List<Photo>) {
         val rvWallpaperAdapter = WallpaperDisplayAdapter(this, list, onImageClick)
         binding.wallpaperRv.adapter = rvWallpaperAdapter
@@ -133,4 +179,63 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constants.SEARCH_QUERY, searchQuery)
         startActivity(intent)
     }
+
+    init {
+        setSliderList()
+    }
+
+    private fun setSliderList() {
+        sliderList.apply {
+            clear()
+            add(
+                KeyValue(
+                    "Animals",
+                    "https://images.pexels.com/photos/927497/pexels-photo-927497.jpeg?auto=compress&cs=tinysrgb&w=600"
+                )
+            )
+            add(
+                KeyValue(
+                    "Art",
+                    "https://images.pexels.com/photos/1621793/pexels-photo-1621793.jpeg?auto=compress&cs=tinysrgb&w=600"
+                )
+            )
+            add(
+                KeyValue(
+                    "Fashion",
+                    "https://images.pexels.com/photos/1884584/pexels-photo-1884584.jpeg?auto=compress&cs=tinysrgb&w=600"
+                )
+            )
+            add(
+                KeyValue(
+                    "Foggy Forests",
+                    "https://images.pexels.com/photos/9754/mountains-clouds-forest-fog.jpg?auto=compress&cs=tinysrgb&w=600"
+                )
+            )
+            add(
+                KeyValue(
+                    "Lifestyle",
+                    "https://images.pexels.com/photos/237272/pexels-photo-237272.jpeg?auto=compress&cs=tinysrgb&w=600"
+                )
+            )
+            add(
+                KeyValue(
+                    "Minimalism",
+                    "https://images.pexels.com/photos/262367/pexels-photo-262367.jpeg?auto=compress&cs=tinysrgb&w=600"
+                )
+            )
+            add(
+                KeyValue(
+                    "Plants",
+                    "https://images.pexels.com/photos/807598/pexels-photo-807598.jpeg?auto=compress&cs=tinysrgb&w=600"
+                )
+            )
+            add(
+                KeyValue(
+                    "Space",
+                    "https://images.pexels.com/photos/1938348/pexels-photo-1938348.jpeg?auto=compress&cs=tinysrgb&w=600"
+                )
+            )
+        }
+    }
+
 }
