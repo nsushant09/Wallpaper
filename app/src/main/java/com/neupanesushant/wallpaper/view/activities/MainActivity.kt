@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -96,7 +98,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.adView.adListener = object : AdListener() {
-            override fun onAdFailedToLoad(p0: LoadAdError) {
+            override fun onAdFailedToLoad(error: LoadAdError) {
+                Log.i("ADERROR", error.toString())
+                Toast.makeText(this@MainActivity, error.toString(), Toast.LENGTH_LONG).show()
                 binding.adView.isVisible = false
             }
 
