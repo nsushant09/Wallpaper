@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import com.neupanesushant.wallpaper.view.adapter.WallpaperDisplayAdapter
-import com.neupanesushant.wallpaper.view.viewmodels.FavoritesViewModel
 import com.neupanesushant.wallpaper.databinding.ActivityFavoritesBinding
 import com.neupanesushant.wallpaper.domain.model.Constants
 import com.neupanesushant.wallpaper.domain.model.Photo
+import com.neupanesushant.wallpaper.view.adapter.WallpaperDisplayAdapter
+import com.neupanesushant.wallpaper.view.viewmodels.FavoritesViewModel
 import org.koin.android.ext.android.inject
 
 class FavoritesActivity : AppCompatActivity() {
@@ -49,8 +49,10 @@ class FavoritesActivity : AppCompatActivity() {
 
     private fun setupObserver() {
         favoritesViewModel.favoriteImagesList.observe(this) {
+
+            setVisibilityAccordingResult(it.isNotEmpty())
+
             if (this@FavoritesActivity::adapter.isInitialized) {
-                setVisibilityAccordingResult(it.isNotEmpty())
                 adapter.changeList(it)
             } else {
                 adapter = WallpaperDisplayAdapter(this, it, onImageClick)

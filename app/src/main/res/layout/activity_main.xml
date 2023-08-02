@@ -9,19 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-
+        android:fillViewport="true"
+        android:isScrollContainer="true"
+        android:measureAllChildren="true"
         android:scrollbarThumbVertical="?attr/greenAccordingBg"
         android:scrollbars="vertical"
-        >
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            >
+            android:layout_height="0dp">
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -32,7 +32,7 @@
                 android:indeterminateDrawable="@drawable/style_progressbar"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vpImageSlider" />
+                app:layout_constraintTop_toBottomOf="@id/searchEt" />
 
             <ImageView
                 android:id="@+id/btnCategory"
@@ -47,7 +47,6 @@
                 app:layout_constraintTop_toTopOf="@id/searchEt"
                 app:tint="?attr/colorPrimaryVariant" />
 
-
             <EditText
                 android:id="@+id/searchEt"
                 android:layout_width="0dp"
@@ -57,14 +56,16 @@
                 android:background="@drawable/bg_search"
                 android:fitsSystemWindows="true"
                 android:fontFamily="?attr/fontLight"
-                android:hint="@string/search"
+                android:hint="@string/find_wallpaper"
                 android:imeOptions="actionSearch"
-                android:inputType="text"
 
+                android:importantForAutofill="no"
+                android:inputType="text"
                 android:paddingHorizontal="@dimen/dimen_16dp"
                 android:paddingVertical="@dimen/dimen_4dp"
                 app:layout_constraintLeft_toRightOf="@id/btnCategory"
                 app:layout_constraintRight_toLeftOf="@id/btnFavorites"
+
                 app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -81,50 +82,82 @@
                 app:layout_constraintTop_toTopOf="@id/searchEt"
                 app:tint="?attr/colorPrimaryVariant" />
 
-            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/adView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/dimen_16dp"
-                ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
-                ads:layout_constraintLeft_toLeftOf="parent"
-                ads:layout_constraintRight_toRightOf="parent"
-                ads:layout_constraintTop_toBottomOf="@id/searchEt" />
-
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vpImageSlider"
+            <LinearLayout
+                android:id="@+id/contentVisibleContainer"
                 android:layout_width="match_parent"
-                android:layout_height="210dp"
-
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_16dp"
+                android:orientation="vertical"
+
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/adView"
-                />
+                app:layout_constraintTop_toBottomOf="@id/searchEt">
 
+                <!--            Future Categories Vp Addition -->
+                <!--            <RelativeLayout-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:layout_gravity="center">-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/wallpaperRv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="@string/categories"-->
+                <!--                    android:textAppearance="@style/LightHeader"-->
+                <!--                    android:textColor="?attr/colorPrimaryVariant" />-->
 
-                android:layout_margin="@dimen/dimen_16dp"
-                android:layout_marginTop="@dimen/dimen_8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vpImageSlider"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0"
-                />
+                <!--                <TextView-->
+                <!--                    android:id="@+id/btnCategory1"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_alignParentEnd="true"-->
+                <!--                    android:layout_centerVertical="true"-->
+                <!--                    android:fontFamily="@font/lexend_semibold"-->
+                <!--                    android:padding="@dimen/dimen_8dp"-->
+                <!--                    android:text="@string/view_all"-->
+                <!--                    android:textColor="@color/black"-->
+                <!--                    tools:ignore="RelativeOverlap" />-->
+
+                <!--            </RelativeLayout>-->
+
+                <!--            <androidx.recyclerview.widget.RecyclerView-->
+                <!--                android:id="@+id/categoriesRv"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:layout_marginTop="@dimen/dimen_8dp" />-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:text="@string/free_wallpapers"
+                    android:textAppearance="@style/LightHeader"
+                    android:textColor="?attr/colorPrimaryVariant" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/wallpaperRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8dp" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

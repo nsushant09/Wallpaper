@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.neupanesushant.wallpaper.databinding.ItemCategoryBinding
+import com.neupanesushant.wallpaper.domain.model.KeyValue
 
 class CategoryDisplayAdapter(
     private val context: Context,
-    private val categoryList : List<String>,
-    private val onCategoryClick : (String) -> Unit
+    private val categoryList: List<String>,
+    private val onCategoryClick: (String) -> Unit
 ) :
     RecyclerView.Adapter<CategoryDisplayAdapter.ViewHolder>() {
 

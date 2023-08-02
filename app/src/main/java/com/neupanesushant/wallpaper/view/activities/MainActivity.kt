@@ -20,7 +20,7 @@ import com.neupanesushant.wallpaper.domain.model.Constants
 import com.neupanesushant.wallpaper.domain.model.KeyValue
 import com.neupanesushant.wallpaper.domain.model.Photo
 import com.neupanesushant.wallpaper.domain.usecase.ad.BannerAdsManager
-import com.neupanesushant.wallpaper.view.adapter.ImageSliderAdapter
+import com.neupanesushant.wallpaper.view.adapter.CategoryRvDisplayAdapter
 import com.neupanesushant.wallpaper.view.adapter.WallpaperDisplayAdapter
 import com.neupanesushant.wallpaper.view.fragment.BottomSheetCallback
 import com.neupanesushant.wallpaper.view.fragment.CategoryBottomSheet
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private val onSliderClick: (String) -> Unit = { string ->
+    private val onCategoryClick: (String) -> Unit = { string ->
         callSearchedImageActivity(string)
     }
 
@@ -64,9 +64,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupViews() {
         bannerAdsManager.loadAd(binding.adView)
-        binding.wallpaperRv.layoutManager = GridLayoutManager(this, 2)
         cacheViewModel.getSearchResponse("Random")
-        setupSliderViewPager()
+
+        binding.wallpaperRv.layoutManager = GridLayoutManager(this, 2)
+
+//        binding.categoriesRv.layoutManager = GridLayoutManager(this, 2)
+//        setupCategoriesRv()
     }
 
     private fun setupEventListener() {
@@ -136,40 +139,8 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.isLoading.observe(this) {
             binding.progressBar.isVisible = it
-            binding.wallpaperRv.isVisible = !it
+            binding.contentVisibleContainer.isVisible = !it
         }
-    }
-
-    private fun setupSliderViewPager() {
-
-        if (!SystemServiceManagers.isInternetConnected(this)) {
-            binding.vpImageSlider.isVisible = false
-            return
-        }
-
-        val adapter =
-            ImageSliderAdapter(this, sliderList, onSliderClick)
-        binding.vpImageSlider.adapter = adapter
-
-        var imageSliderRunnable: Runnable? = null
-
-        imageSliderRunnable = Runnable {
-            val currentItem = binding.vpImageSlider.currentItem
-            if (sliderList.size - 1 == currentItem) {
-                binding.vpImageSlider.setCurrentItem(
-                    0,
-                    true
-                )
-            } else {
-                binding.vpImageSlider.setCurrentItem(
-                    currentItem + 1,
-                    true
-                )
-            }
-            handler.postDelayed(imageSliderRunnable!!, 5000)
-        }
-
-        handler.postDelayed(imageSliderRunnable, 5000)
     }
 
     private fun setupWallpaperRv(list: List<Photo>) {
@@ -177,6 +148,11 @@ class MainActivity : AppCompatActivity() {
         binding.wallpaperRv.adapter = rvWallpaperAdapter
         mainViewModel.isLoading.value = false
     }
+
+//    private fun setupCategoriesRv() {
+//        val rvCategoriesAdapter = CategoryRvDisplayAdapter(this, sliderList, onCategoryClick)
+//        binding.categoriesRv.adapter = rvCategoriesAdapter
+//    }
 
     private fun callSearchedImageActivity(searchQuery: String) {
         val intent = Intent(this, SearchedImageActivity::class.java)

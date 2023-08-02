@@ -29,7 +29,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginTop="@dimen/dimen_16dp"
                 android:layout_marginEnd="@dimen/dimen_16dp"
-                >
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/btnBack"
@@ -38,11 +38,13 @@
                     android:padding="@dimen/dimen_12dp"
                     android:src="@drawable/ic_back"
                     android:contentDescription="@string/action_back"
-                    app:tint="?attr/colorBackgroundInvert" />
+                    app:tint="?attr/colorPrimaryVariant"
+                    />
 
                 <TextView
                     android:id="@+id/searchTitle"
                     style="@style/LightHeader"
+                    android:textColor="?attr/colorPrimaryVariant"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_8dp"

@@ -43,6 +43,6 @@ class InterstitialAdsManager(
     }
 
     fun setContentCallback(contentCallback: FullScreenContentCallback) {
-        interstitialAd?.fullScreenContentCallback = contentCallback as FullScreenContentCallback
+        interstitialAd?.fullScreenContentCallback = contentCallback
     }
 }
