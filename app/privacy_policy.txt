@@ -1,0 +1,28 @@
+At WallFusion, we are committed to ensuring the privacy and security of our users. This Privacy Policy outlines how we collect, use, and handle your personal information when you use our wallpaper app.
+
+Information Collection and Use:
+
+Wallpapers: WallFusion retrieves wallpapers from a remote server to provide you with a wide selection of HD and 4K wallpapers. We do not collect any personal information from the wallpapers themselves.
+
+Device Information: We may collect certain information about your device, such as device type, operating system, unique device identifiers, and IP address. This information is used to improve our app's performance and troubleshoot technical issues.
+
+Local Database: WallFusion may save some wallpapers in a local database on your device for caching purposes. This allows us to load wallpapers faster and provide a better user experience in the future. The locally stored wallpapers do not include any personal information.
+
+Analytics: We may use analytics tools to collect usage data, such as the number of wallpapers viewed, app interactions, and the duration of app sessions. This information helps us understand how users interact with our app and make necessary improvements.
+
+Information Sharing and Disclosure:
+
+Personal Information: We do not collect or share any personally identifiable information, such as names, email addresses, or contact details.
+
+Third-Party Services: WallFusion may use third-party services to improve app functionality and user experience. These services may have access to non-personal information, but they are obligated not to disclose or use it for any other purpose.
+
+Data Security:
+WallFusion takes data security seriously and implements industry-standard measures to protect your information from unauthorized access, alteration, or disclosure. However, please be aware that no method of transmission over the internet or electronic storage is entirely secure, and we cannot guarantee absolute security.
+
+Changes to the Privacy Policy:
+WallFusion may update this Privacy Policy from time to time. Any changes will be reflected in the app, and your continued use of the app after the changes signify your acceptance of the updated policy.
+
+Contact Us:
+If you have any questions or concerns about this Privacy Policy or our app's privacy practices, please contact us at nsushant09@gmail.com.
+
+By using WallFusion - HD, 4K Wallpapers, you agree to the terms and conditions outlined in this Privacy Policy. Last updated on 3rd August 2023.
