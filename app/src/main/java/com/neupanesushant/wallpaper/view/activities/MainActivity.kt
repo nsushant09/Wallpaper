@@ -41,11 +41,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private val onCategoryClick: (String) -> Unit = { string ->
-        callSearchedImageActivity(string)
-    }
-
-    private val handler = Handler(Looper.myLooper()!!)
     private var sliderList = arrayListOf<KeyValue>()
 
     private lateinit var bannerAdsManager: BannerAdsManager
@@ -68,8 +63,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.wallpaperRv.layoutManager = GridLayoutManager(this, 2)
 
-//        binding.categoriesRv.layoutManager = GridLayoutManager(this, 2)
-//        setupCategoriesRv()
     }
 
     private fun setupEventListener() {
@@ -102,9 +95,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.adView.adListener = object : AdListener() {
             override fun onAdFailedToLoad(error: LoadAdError) {
-                Log.i("ADERROR", error.toString())
-                Toast.makeText(this@MainActivity, error.toString(), Toast.LENGTH_LONG).show()
+                bannerAdsManager.loadAd(binding.adView)
                 binding.adView.isVisible = false
+
             }
 
             override fun onAdLoaded() {
@@ -148,11 +141,6 @@ class MainActivity : AppCompatActivity() {
         binding.wallpaperRv.adapter = rvWallpaperAdapter
         mainViewModel.isLoading.value = false
     }
-
-//    private fun setupCategoriesRv() {
-//        val rvCategoriesAdapter = CategoryRvDisplayAdapter(this, sliderList, onCategoryClick)
-//        binding.categoriesRv.adapter = rvCategoriesAdapter
-//    }
 
     private fun callSearchedImageActivity(searchQuery: String) {
         val intent = Intent(this, SearchedImageActivity::class.java)
