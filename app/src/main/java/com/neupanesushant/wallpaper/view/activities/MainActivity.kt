@@ -2,11 +2,8 @@ package com.neupanesushant.wallpaper.view.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,7 +17,6 @@ import com.neupanesushant.wallpaper.domain.model.Constants
 import com.neupanesushant.wallpaper.domain.model.KeyValue
 import com.neupanesushant.wallpaper.domain.model.Photo
 import com.neupanesushant.wallpaper.domain.usecase.ad.BannerAdsManager
-import com.neupanesushant.wallpaper.view.adapter.CategoryRvDisplayAdapter
 import com.neupanesushant.wallpaper.view.adapter.WallpaperDisplayAdapter
 import com.neupanesushant.wallpaper.view.fragment.BottomSheetCallback
 import com.neupanesushant.wallpaper.view.fragment.CategoryBottomSheet
@@ -58,6 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
+        binding.adView.adListener = adViewListener
         bannerAdsManager.loadAd(binding.adView)
         cacheViewModel.getSearchResponse("Random")
 
@@ -92,17 +89,18 @@ class MainActivity : AppCompatActivity() {
 
             true
         }
+    }
 
-        binding.adView.adListener = object : AdListener() {
-            override fun onAdFailedToLoad(error: LoadAdError) {
-                bannerAdsManager.loadAd(binding.adView)
-                binding.adView.isVisible = false
+    private val adViewListener = object : AdListener() {
+        override fun onAdFailedToLoad(error: LoadAdError) {
+            Log.i("MainActivityError", error.message.toString())
+            bannerAdsManager.loadAd(binding.adView)
+            binding.adView.isVisible = false
 
-            }
+        }
 
-            override fun onAdLoaded() {
-                binding.adView.isVisible = true
-            }
+        override fun onAdLoaded() {
+            binding.adView.isVisible = true
         }
     }
 

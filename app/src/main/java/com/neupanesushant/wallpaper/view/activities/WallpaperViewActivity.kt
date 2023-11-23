@@ -14,9 +14,6 @@ import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.FullScreenContentCallback
-import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.neupanesushant.wallpaper.R
@@ -44,6 +41,8 @@ import java.net.URL
 
 class WallpaperViewActivity : AppCompatActivity() {
 
+    // Load ad when the user clicks on download / apply button only
+
     private lateinit var binding: ActivityWallpaperViewBinding
     private lateinit var wallpaperPhoto: Photo
     private lateinit var downloader: Downloader
@@ -52,16 +51,21 @@ class WallpaperViewActivity : AppCompatActivity() {
     private val wallpaperViewModel: WallpaperViewModel by inject()
     private var isCurrentPhotoFavorite: Boolean = false
 
-    private lateinit var interstitialAdsManager: InterstitialAdsManager
+    private lateinit var downloadInterstitialAdsManager: InterstitialAdsManager
+    private lateinit var applyInterstitialAdsManager: InterstitialAdsManager
+
+    private var dIntent: Deferred<Intent?>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWallpaperViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        interstitialAdsManager =
-            InterstitialAdsManager(this, addLoadCallback)
-        interstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
+        downloadInterstitialAdsManager =
+            InterstitialAdsManager(this, downloadAdLoadCallback)
+
+        applyInterstitialAdsManager =
+            InterstitialAdsManager(this, applyAdLoadCallback)
 
         if (intent.getParcelableExtra<Photo>(Constants.WALLPAPER_PHOTO) == null) {
             finish()
@@ -111,12 +115,7 @@ class WallpaperViewActivity : AppCompatActivity() {
                 )
                 return@setOnClickListener
             }
-
-            interstitialAdsManager.setContentCallback(getContentCallBack {
-                interstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
-                downloadImage()
-            })
-            interstitialAdsManager.showAd(this)
+            downloadInterstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
         }
 
         binding.btnApply.setOnClickListener {
@@ -139,24 +138,21 @@ class WallpaperViewActivity : AppCompatActivity() {
                     getWallpaperIntent()
                 }
             }
+            if (deferredIntent == null)
+                return@setOnClickListener
 
-            interstitialAdsManager.setContentCallback(getContentCallBack {
-                interstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
-
-                if (deferredIntent == null)
-                    return@getContentCallBack
-
-                CoroutineScope(Dispatchers.Default).launch {
-                    val intent = deferredIntent!!.await() ?: return@launch
-                    startActivityForResult(intent, WALLPAPER_SET_REQUEST_CODE)
-                    isApplyButtonActive = false
-                    Handler(Looper.getMainLooper()).postDelayed(
-                        { isApplyButtonActive = true }, 10000
-                    )
-                }
-            })
-
-            interstitialAdsManager.showAd(this)
+            dIntent = deferredIntent
+            applyInterstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
+        }
+    }
+    private fun setWallpaperDefferedIntent(dIntent: Deferred<Intent?>) {
+        CoroutineScope(Dispatchers.Default).launch {
+            val intent = dIntent.await() ?: return@launch
+            startActivityForResult(intent, WALLPAPER_SET_REQUEST_CODE)
+            isApplyButtonActive = false
+            Handler(Looper.getMainLooper()).postDelayed(
+                { isApplyButtonActive = true }, 10000
+            )
         }
     }
 
@@ -228,25 +224,21 @@ class WallpaperViewActivity : AppCompatActivity() {
 
     }
 
-    private fun getContentCallBack(callback: () -> Unit): FullScreenContentCallback {
-        return object : FullScreenContentCallback() {
-            override fun onAdDismissedFullScreenContent() {
-                callback()
-            }
 
-            override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                callback()
-            }
+    private val downloadAdLoadCallback = object : InterstitialAdLoadCallback() {
+        override fun onAdLoaded(interstitialAd: InterstitialAd) {
+            downloadInterstitialAdsManager.setAd(interstitialAd)
+            downloadInterstitialAdsManager.showAd(this@WallpaperViewActivity)
+            downloadImage()
         }
     }
 
-
-    private val addLoadCallback = object : InterstitialAdLoadCallback() {
-        override fun onAdFailedToLoad(adError: LoadAdError) {
-        }
-
+    private val applyAdLoadCallback = object : InterstitialAdLoadCallback() {
         override fun onAdLoaded(interstitialAd: InterstitialAd) {
-            interstitialAdsManager.setAd(interstitialAd)
+            if(dIntent == null) return;
+            applyInterstitialAdsManager.setAd(interstitialAd)
+            applyInterstitialAdsManager.showAd(this@WallpaperViewActivity)
+            setWallpaperDefferedIntent(dIntent!!)
         }
     }
 }
