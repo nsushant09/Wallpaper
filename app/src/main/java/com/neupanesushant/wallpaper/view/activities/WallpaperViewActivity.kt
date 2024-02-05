@@ -8,12 +8,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.neupanesushant.wallpaper.R
@@ -27,6 +29,7 @@ import com.neupanesushant.wallpaper.domain.usecase.AndroidDownloader
 import com.neupanesushant.wallpaper.domain.usecase.Downloader
 import com.neupanesushant.wallpaper.domain.usecase.ad.AdCodes
 import com.neupanesushant.wallpaper.domain.usecase.ad.InterstitialAdsManager
+import com.neupanesushant.wallpaper.view.dialog.LoadingDialog
 import com.neupanesushant.wallpaper.view.viewmodels.WallpaperViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -50,6 +53,7 @@ class WallpaperViewActivity : AppCompatActivity() {
     private var isApplyButtonActive = true
     private val wallpaperViewModel: WallpaperViewModel by inject()
     private var isCurrentPhotoFavorite: Boolean = false
+    private val loadingDialog = LoadingDialog()
 
     private lateinit var downloadInterstitialAdsManager: InterstitialAdsManager
     private lateinit var applyInterstitialAdsManager: InterstitialAdsManager
@@ -115,6 +119,8 @@ class WallpaperViewActivity : AppCompatActivity() {
                 )
                 return@setOnClickListener
             }
+
+            loadingDialog.show(supportFragmentManager, loadingDialog::class.java.name)
             downloadInterstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
         }
 
@@ -145,6 +151,7 @@ class WallpaperViewActivity : AppCompatActivity() {
             applyInterstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
         }
     }
+
     private fun setWallpaperDefferedIntent(dIntent: Deferred<Intent?>) {
         CoroutineScope(Dispatchers.Default).launch {
             val intent = dIntent.await() ?: return@launch
@@ -228,14 +235,21 @@ class WallpaperViewActivity : AppCompatActivity() {
     private val downloadAdLoadCallback = object : InterstitialAdLoadCallback() {
         override fun onAdLoaded(interstitialAd: InterstitialAd) {
             downloadInterstitialAdsManager.setAd(interstitialAd)
+            loadingDialog.dismiss()
             downloadInterstitialAdsManager.showAd(this@WallpaperViewActivity)
             downloadImage()
+        }
+
+        override fun onAdFailedToLoad(error: LoadAdError) {
+            loadingDialog.dismiss()
+            Toast.makeText(this@WallpaperViewActivity, "Failed to show ads", Toast.LENGTH_LONG)
+                .show()
         }
     }
 
     private val applyAdLoadCallback = object : InterstitialAdLoadCallback() {
         override fun onAdLoaded(interstitialAd: InterstitialAd) {
-            if(dIntent == null) return;
+            if (dIntent == null) return;
             applyInterstitialAdsManager.setAd(interstitialAd)
             applyInterstitialAdsManager.showAd(this@WallpaperViewActivity)
             setWallpaperDefferedIntent(dIntent!!)
