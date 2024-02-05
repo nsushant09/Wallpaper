@@ -32,9 +32,7 @@ import com.neupanesushant.wallpaper.domain.usecase.ad.InterstitialAdsManager
 import com.neupanesushant.wallpaper.view.dialog.LoadingDialog
 import com.neupanesushant.wallpaper.view.viewmodels.WallpaperViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
@@ -58,7 +56,7 @@ class WallpaperViewActivity : AppCompatActivity() {
     private lateinit var downloadInterstitialAdsManager: InterstitialAdsManager
     private lateinit var applyInterstitialAdsManager: InterstitialAdsManager
 
-    private var dIntent: Deferred<Intent?>? = null
+    private var wallpaperIntent: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,29 +136,24 @@ class WallpaperViewActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            var deferredIntent: Deferred<Intent?>? = null
-            CoroutineScope(Dispatchers.Default).launch {
-                deferredIntent = async {
-                    getWallpaperIntent()
-                }
-            }
-            if (deferredIntent == null)
-                return@setOnClickListener
+            loadingDialog.show(supportFragmentManager, loadingDialog::class.java.name)
 
-            dIntent = deferredIntent
-            applyInterstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
+            CoroutineScope(Dispatchers.IO).launch {
+                wallpaperIntent = getWallpaperIntent()
+                loadingDialog.dismiss()
+                if (wallpaperIntent == null) return@launch;
+                setWallpaperIntent(wallpaperIntent!!)
+            }
+//            applyInterstitialAdsManager.loadAd(AdCodes.WALLPAPER_VIEW_AD_UNIT)
         }
     }
 
-    private fun setWallpaperDefferedIntent(dIntent: Deferred<Intent?>) {
-        CoroutineScope(Dispatchers.Default).launch {
-            val intent = dIntent.await() ?: return@launch
-            startActivityForResult(intent, WALLPAPER_SET_REQUEST_CODE)
-            isApplyButtonActive = false
-            Handler(Looper.getMainLooper()).postDelayed(
-                { isApplyButtonActive = true }, 10000
-            )
-        }
+    private fun setWallpaperIntent(intent: Intent) {
+        startActivityForResult(intent, WALLPAPER_SET_REQUEST_CODE)
+        isApplyButtonActive = false
+        Handler(Looper.getMainLooper()).postDelayed(
+            { isApplyButtonActive = true }, 10000
+        )
     }
 
     private fun setupObserver() {
@@ -249,10 +242,17 @@ class WallpaperViewActivity : AppCompatActivity() {
 
     private val applyAdLoadCallback = object : InterstitialAdLoadCallback() {
         override fun onAdLoaded(interstitialAd: InterstitialAd) {
-            if (dIntent == null) return;
-            applyInterstitialAdsManager.setAd(interstitialAd)
-            applyInterstitialAdsManager.showAd(this@WallpaperViewActivity)
-            setWallpaperDefferedIntent(dIntent!!)
+            loadingDialog.dismiss()
+            if (wallpaperIntent == null) return;
+//            applyInterstitialAdsManager.setAd(interstitialAd)
+//            applyInterstitialAdsManager.showAd(this@WallpaperViewActivity)
+            setWallpaperIntent(wallpaperIntent!!)
+        }
+
+        override fun onAdFailedToLoad(p0: LoadAdError) {
+            loadingDialog.dismiss()
+            Toast.makeText(this@WallpaperViewActivity, "Failed to show ads", Toast.LENGTH_LONG)
+                .show()
         }
     }
 }
